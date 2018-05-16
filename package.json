@@ -39,7 +39,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/anonymous node/sails user/backend.git"
+    "url": "https://git.heroku.com/hobstopbackend.git"
   },
   "author": "anonymous node/sails user",
   "license": ""
