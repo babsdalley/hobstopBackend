@@ -37,11 +37,7 @@ module.exports.connections = {
 
   mongoLabServer: {
     adapter: 'sails-mongo',
-    host: 'ds223760.mlab.com',
-    port: 23760,
-    user: 'admin',
-    password: 'pass', 
-    database: 'hobstop'
+    url: process.env.DB_URI
   },
   /***************************************************************************
   *                                                                          *
