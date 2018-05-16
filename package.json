@@ -32,6 +32,10 @@
     "debug": "node debug app.js",
     "start": "node app.js"
   },
+  "engines": {
+    "node": "8.11.2",
+    "npm": "5.6.0"
+  },
   "main": "app.js",
   "repository": {
     "type": "git",
