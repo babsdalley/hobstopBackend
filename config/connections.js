@@ -36,7 +36,7 @@ module.exports.connections = {
 
   mongoLabServer: {
     adapter: 'sails-mongo',
-    url: /*process.env.DB_URI*/'mongodb://admin:pass@ds223760.mlab.com:23760/hobstop'
+    url: process.env.DB_URI
   },
   /***************************************************************************
   *                                                                          *

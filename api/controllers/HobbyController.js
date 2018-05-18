@@ -5,16 +5,16 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-const accountSid = 'ACc4df0a10f63f2c7040bf98d244f91a5a'; // Your Account SID from www.twilio.com/console
-const authToken = '00f0878293d7ff333ccac2ab7d2c9fd4';
+const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const SparkPost = require('sparkpost');
-const sparky = new SparkPost('77ce7a69f72e91093d109b427a89452cd7afd0f2');
+const sparky = new SparkPost(process.env.SPARKPOST_AUTH_TOKEN);
 
 const client = require('twilio')(accountSid, authToken);
 var sendSMS = function(message, mobileNumber) {
   client.messages.create({
-    from: '+16263250829',
+    from: process.env.TWILIO_NUMBER,
     to: mobileNumber,
     body: message,
     }, function(err, message){
