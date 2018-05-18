@@ -5,7 +5,6 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
-    "dotenv": "^5.0.1",
     "ejs": "2.3.4",
     "grunt": "1.0.1",
     "grunt-contrib-clean": "1.0.0",
@@ -26,6 +25,7 @@
     "sails": "~0.12.14",
     "sails-disk": "~0.10.9",
     "sails-mongo": "^0.12.3",
+    "sparkpost": "^2.1.2",
     "twilio": "^3.17.0"
   },
   "scripts": {

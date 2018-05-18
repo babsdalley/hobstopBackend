@@ -19,7 +19,6 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.connections.html
  */
 
-require('dotenv').config();
 
 module.exports.connections = {
 
@@ -37,7 +36,7 @@ module.exports.connections = {
 
   mongoLabServer: {
     adapter: 'sails-mongo',
-    url: process.env.DB_URI
+    url: /*process.env.DB_URI*/'mongodb://admin:pass@ds223760.mlab.com:23760/hobstop'
   },
   /***************************************************************************
   *                                                                          *

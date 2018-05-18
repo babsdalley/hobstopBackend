@@ -4,10 +4,12 @@
  * @description :: Server-side logic for managing hobbies
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-require('dotenv').config();
 
 const accountSid = 'ACc4df0a10f63f2c7040bf98d244f91a5a'; // Your Account SID from www.twilio.com/console
 const authToken = '00f0878293d7ff333ccac2ab7d2c9fd4';
+
+const SparkPost = require('sparkpost');
+const sparky = new SparkPost('77ce7a69f72e91093d109b427a89452cd7afd0f2');
 
 const client = require('twilio')(accountSid, authToken);
 var sendSMS = function(message, mobileNumber) {
@@ -26,6 +28,30 @@ var sendSMS = function(message, mobileNumber) {
     });
 }
 
+var sendEmail = function(message, email) {
+  sparky.transmissions.send({
+      options: {
+        endpoint: 'lanre.co'
+      },
+      content: {
+        from: 'babajide@lanre.co',
+        subject: 'New Hobby',
+        html:'<html><body><p>'+ message +'</p></body></html>'
+      },
+      recipients: [
+        {address: email}
+      ]
+    })
+    .then(data => {
+      console.log('Email sent!');
+      console.log(data);
+    })
+    .catch(err => {
+      console.log('Error sending mail');
+      console.log(err);
+    });
+}
+
 module.exports = {
 	getUserHobbies(req, res){
         Hobby.find({ userId: req.param('userId')
@@ -35,35 +61,10 @@ module.exports = {
       });
     },
 
-    // createNewHobby(req, res){
-    //     var name = req.param('name');
-    //     var message = "You created a new hobby: " + name;
-    //     User.findOne({ id: req.param('userId')
-    //     }, function foundUser(err, createdUser) {
-    //       if (err) return res.negotiate(err);
-    //       if (!createdUser) return res.notFound("User not found");
-    //       return res.ok(createdUser);
-        
-    //     var newHobby = {
-    //         name: name,
-    //         userId: req.param('userId')
-    //     };
-
-    //     Hobby.create(newHobby).exec(function(err, newHobby) {
-    //         if (err) {
-    //             return res.json(500, { status:false, message: "Hobby could not be created" });
-    //         }
-    //         twilioService.sendSMS(message, createdUser.phoneNumber);
-    //         return res.ok(newHobby);
-    
-    //     });
-    // });
-    // },
-
     createNewHobby(req, res) {
         var name = req.param('name');
         var userId = req.param('userId');
-        var message = "You created a new hobby: " + name
+        
     
         User.findOne({ id: userId }).exec(function(error, user) {
           if (error) {
@@ -72,14 +73,16 @@ module.exports = {
           if(!user){
             return res.notFound("User not found");
           }
-    
+
+          var message = "Hello "+  user.firstName + " " + user.lastName + ".\nThanks for signing up on hobstop. You created a new hobby: " + name + ". Hope you stick to it.";
           Hobby.create({ name: name, userId: userId }).exec(function(error, newHobby) {
             if (error) {
                 return res.negotiate(error);
             }
-            sendSMS(message, user.phoneNumber)
+            sendSMS(message, user.phoneNumber);
+            sendEmail(message, user.email);
     
-            return res.ok(newHobby);
+            return res.json(newHobby);
           });
         });
     
@@ -106,13 +109,3 @@ module.exports = {
       },
       
 };
-
-// User.update({id: req.param('id')},{deleted: true}, function(err, removedUser){
-//     if (err) return res.negotiate(err);
-//     if (removedUser.length === 0) {
-//     return res.notFound();
-//     }
-//     return res.ok();
-// });
-// }
-// };
